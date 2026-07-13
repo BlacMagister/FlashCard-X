@@ -1,0 +1,6 @@
+{
+  "name": "Flashcard X",
+  "description": "Minimalist Japanese Kanji flashcards. Smooth animations, no spoilers on next card.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
