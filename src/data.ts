@@ -33,6 +33,36 @@ export const chapters: ChapterData[] = [
       { hiragana: "それはおもしろいですね。", romaji: "sore wa omoshiroidesune.", meaning: "Itu menarik ya." },
       { hiragana: "へえ", romaji: "hee", meaning: "Betul ya?/Benar ya?/Masa! (digunakan ketika terkagum atau terkejut)" }
     ]
+  },
+  {
+    id: 19,
+    name: "Bab 19",
+    cards: [
+      { kanji: "登ります、上ります", hiragana: "のぼります", romaji: "noborimasu", meaning: "naik" },
+      { kanji: "泊まります", hiragana: "とまります", romaji: "tomarimasu", meaning: "menginap [di hotel]" },
+      { kanji: "掃除します", hiragana: "そうじします", romaji: "soujishimasu", meaning: "membersihkan" },
+      { kanji: "洗濯します", hiragana: "せんたくします", romaji: "sentakushimasu", meaning: "mencuci pakaian" },
+      { hiragana: "なります", romaji: "narimasu", meaning: "menjadi" },
+      { kanji: "眠い", hiragana: "ねむい", romaji: "nemui", meaning: "mengantuk" },
+      { kanji: "強い", hiragana: "つよい", romaji: "tsuyoi", meaning: "kuat" },
+      { kanji: "弱い", hiragana: "よわい", romaji: "yowai", meaning: "lemah" },
+      { kanji: "練習", hiragana: "れんしゅう", romaji: "renshuu", meaning: "latihan (〜[を] します : berlatih)" },
+      { hiragana: "ゴルフ", romaji: "gorufu", meaning: "golf (〜[を] します : bermain golf)" },
+      { kanji: "相撲", hiragana: "すもう", romaji: "sumou", meaning: "sumo (〜[を] します : bermain sumo)" },
+      { kanji: "お茶", hiragana: "おちゃ", romaji: "ocha", meaning: "upacara minum teh" },
+      { kanji: "日", hiragana: "ひ", romaji: "hi", meaning: "hari" },
+      { kanji: "調子", hiragana: "ちょうし", romaji: "choushi", meaning: "kondisi" },
+      { kanji: "一度", hiragana: "いちど", romaji: "ichido", meaning: "sekali" },
+      { kanji: "一度も", hiragana: "いちども", romaji: "ichidomo", meaning: "sekali-kali, satu kali pun (diikuti bentuk negatif)" },
+      { hiragana: "だんだん", romaji: "dandan", meaning: "berangsur-angsuran, lama-kelamaan" },
+      { hiragana: "もうすぐ", romaji: "mousugu", meaning: "tidak lama lagi" },
+      { hiragana: "おかげさまで", romaji: "okagesamade", meaning: "atas berkat (ucapan yang digunakan ketika menyatakan rasa terima kasih atas bantuan atau kebaikan hati dari orang)" },
+      { hiragana: "でも", romaji: "demo", meaning: "tetapi" },
+      { kanji: "乾杯", hiragana: "かんぱい", romaji: "kanpai", meaning: "toast" },
+      { hiragana: "ダイエット", romaji: "daietto", meaning: "diet (〜を します : berdiet)" },
+      { kanji: "無理[な]", hiragana: "むり[な]", romaji: "muri[na]", meaning: "paksa, berlebihan" },
+      { kanji: "体にいい", hiragana: "からだにいい", romaji: "karadaniii", meaning: "baik untuk tubuh" }
+    ]
   }
 ];
 

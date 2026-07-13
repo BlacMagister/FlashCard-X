@@ -69,6 +69,9 @@ export default function App() {
   const [direction, setDirection] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
 
+  // Derive a safe index for rendering to prevent out-of-bounds errors when activeCards shrinks
+  const safeIndex = Math.min(currentIndex, Math.max(0, activeCards.length - 1));
+
   // Reset index when activeCards changes
   useEffect(() => {
     setCurrentIndex(0);
@@ -248,7 +251,7 @@ export default function App() {
             {activeCards.length > 0 ? (
               <AnimatePresence initial={false} custom={direction} mode="popLayout">
                 <motion.div
-                  key={`${selectedChapterId}-${activeCards[currentIndex].hiragana}`} // Unique key ensures isFlipped state resets on chapter change as well
+                  key={`${selectedChapterId}-${activeCards[safeIndex]?.hiragana}`} // Unique key ensures isFlipped state resets on chapter change as well
                   custom={direction}
                   variants={slideVariants}
                   initial="enter"
@@ -258,7 +261,7 @@ export default function App() {
                   className="absolute inset-0"
                 >
                   <Card 
-                    card={activeCards[currentIndex]} 
+                    card={activeCards[safeIndex]} 
                     isFlipped={isFlipped}
                     onFlip={() => setIsFlipped(!isFlipped)}
                   />
@@ -304,7 +307,7 @@ export default function App() {
 
             <button
               onClick={nextCard}
-              disabled={currentIndex === activeCards.length - 1 || activeCards.length === 0}
+              disabled={safeIndex === activeCards.length - 1 || activeCards.length === 0}
               className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-[#E8E8DF] flex shrink-0 items-center justify-center text-[#8C8C70] hover:bg-white hover:text-[#5A5A40] disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
               aria-label="Next card"
             >
@@ -317,11 +320,11 @@ export default function App() {
             <div className="flex flex-col items-center justify-center gap-1">
               <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C8C70] font-bold">Progress</span>
               <span className="text-sm font-semibold text-[#5A5A40]">
-                {activeCards.length > 0 ? currentIndex + 1 : 0} / {activeCards.length}
+                {activeCards.length > 0 ? safeIndex + 1 : 0} / {activeCards.length}
               </span>
             </div>
 
-            {currentIndex === activeCards.length - 1 && activeCards.length > 0 && (
+            {safeIndex === activeCards.length - 1 && activeCards.length > 0 && (
               <motion.button
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
