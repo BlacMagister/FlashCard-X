@@ -16,12 +16,13 @@ export function Card({ card, isFlipped, onFlip }: CardProps) {
       
       <motion.div
         className="w-full h-full relative [transform-style:preserve-3d] cursor-pointer"
+        initial={false}
         animate={{ rotateY: isFlipped ? 180 : 0 }}
-        transition={{ duration: 0.6, type: "spring", stiffness: 260, damping: 20 }}
+        transition={{ duration: 0.4, ease: "easeInOut" }}
         onClick={onFlip}
       >
         {/* Front Face */}
-        <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-[40px] sm:rounded-[48px] shadow-[0_20px_50px_rgba(90,90,64,0.1)] border border-[#F0F0E8] flex flex-col items-center justify-center p-6 sm:p-8">
+        <div className="absolute inset-0 [backface-visibility:hidden] bg-white rounded-[40px] sm:rounded-[48px] shadow-xl border border-[#F0F0E8] flex flex-col items-center justify-center p-6 sm:p-8">
           <h2 className="text-4xl sm:text-[80px] font-medium text-[#2D2D24] text-center leading-tight">
             {card.kanji || card.hiragana}
           </h2>
@@ -31,7 +32,7 @@ export function Card({ card, isFlipped, onFlip }: CardProps) {
         </div>
 
         {/* Back Face */}
-        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#5A5A40] rounded-[40px] sm:rounded-[48px] shadow-[0_20px_50px_rgba(90,90,64,0.2)] flex flex-col items-center justify-center p-6 sm:p-8 border border-[#4A4A38] gap-2 sm:gap-4">
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[#5A5A40] rounded-[40px] sm:rounded-[48px] shadow-xl flex flex-col items-center justify-center p-6 sm:p-8 border border-[#4A4A38] gap-2 sm:gap-4">
           <div className="flex flex-col items-center gap-1 mb-2">
             {card.kanji && (
               <p className="text-xl sm:text-3xl font-medium text-[#DEDED1] text-center leading-relaxed">

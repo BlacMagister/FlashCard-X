@@ -6,17 +6,15 @@ import { Card } from "./components/Card";
 
 const slideVariants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? 60 : -60,
+    x: direction > 0 ? 40 : -40,
     opacity: 0,
   }),
   center: {
-    zIndex: 1,
     x: 0,
     opacity: 1,
   },
   exit: (direction: number) => ({
-    zIndex: 0,
-    x: direction < 0 ? 60 : -60,
+    x: direction < 0 ? 40 : -40,
     opacity: 0,
   }),
 };
@@ -249,16 +247,16 @@ export default function App() {
           {/* Main Flashcard Area */}
           <div className="relative w-full max-w-[320px] sm:max-w-[520px] h-[340px] sm:h-[400px]">
             {activeCards.length > 0 ? (
-              <AnimatePresence initial={false} custom={direction} mode="popLayout">
+              <AnimatePresence mode="wait" initial={false} custom={direction}>
                 <motion.div
-                  key={`${selectedChapterId}-${activeCards[safeIndex]?.hiragana}`} // Unique key ensures isFlipped state resets on chapter change as well
+                  key={`card-${selectedChapterId}-${safeIndex}-${activeCards[safeIndex]?.kanji || 'none'}-${activeCards[safeIndex]?.hiragana}`}
                   custom={direction}
                   variants={slideVariants}
                   initial="enter"
                   animate="center"
                   exit="exit"
-                  transition={{ duration: 0.3, ease: "easeOut" }}
-                  className="absolute inset-0"
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  className="w-full h-full"
                 >
                   <Card 
                     card={activeCards[safeIndex]} 

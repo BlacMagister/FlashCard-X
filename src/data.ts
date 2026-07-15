@@ -63,6 +63,34 @@ export const chapters: ChapterData[] = [
       { kanji: "無理[な]", hiragana: "むり[な]", romaji: "muri[na]", meaning: "paksa, berlebihan" },
       { kanji: "体にいい", hiragana: "からだにいい", romaji: "karadaniii", meaning: "baik untuk tubuh" }
     ]
+  },
+  {
+    id: 20,
+    name: "Bab 20",
+    cards: [
+      { kanji: "要ります", hiragana: "いります", romaji: "irimasu", meaning: "memerlukan [VISA]" },
+      { kanji: "調べます", hiragana: "しらべます", romaji: "shirabemasu", meaning: "memeriksa, meneliti, mengecek" },
+      { kanji: "修理します", hiragana: "しゅうりします", romaji: "shuurishimasu", meaning: "memperbaiki" },
+      { kanji: "僕", hiragana: "ぼく", romaji: "boku", meaning: "aku (dipakai oleh laki-laki, kata ganti informal dari わたし)" },
+      { kanji: "君", hiragana: "きみ", romaji: "kimi", meaning: "kamu (bentuk informal untuk あなた, digunakan terhadap orang yang setaraf atau di bawah si pembicara)" },
+      { kanji: "〜君", hiragana: "〜くん", romaji: "~kun", meaning: "Sdr. 〜 (bentuk informal untuk さん, digunakan terhadap orang yang setaraf atau di bawah si pembicara, sering digunakan untuk nama anak laki-laki)" },
+      { hiragana: "うん", romaji: "un", meaning: "ya (bentuk informal dari はい)" },
+      { hiragana: "ううん", romaji: "uun", meaning: "tidak, bukan (bentuk informal dari いいえ)" },
+      { hiragana: "ことば", romaji: "kotoba", meaning: "kata, bahasa" },
+      { kanji: "着物", hiragana: "きもの", romaji: "kimono", meaning: "kimono (pakaian tradisional Jepang)" },
+      { hiragana: "ビザ", romaji: "biza", meaning: "VISA" },
+      { kanji: "初め", hiragana: "はじめ", romaji: "hajime", meaning: "awal, mula-mula" },
+      { kanji: "終わり", hiragana: "おわり", romaji: "owari", meaning: "akhir" },
+      { hiragana: "こっち", romaji: "kotchi", meaning: "sini (ungkapan informal dari kata こちら)" },
+      { hiragana: "そっち", romaji: "sotchi", meaning: "situ (ungkapan informal dari kata そちら)" },
+      { hiragana: "あっち", romaji: "atchi", meaning: "sana (ungkapan informal dari kata あちら)" },
+      { hiragana: "どっち", romaji: "dotchi", meaning: "mana (ungkapan informal untuk kata どちら)" },
+      { hiragana: "みんなで", romaji: "minnade", meaning: "kita semua, kita sama-sama" },
+      { hiragana: "〜けど", romaji: "~kedo", meaning: "〜 tetapi (ungkapan informal dari が)" },
+      { hiragana: "おなかがいっぱいです", romaji: "onaka ga ippaidesu", meaning: "sudah kenyang" },
+      { hiragana: "よかったら", romaji: "yokattara", meaning: "kalau mau, kalau suka" },
+      { hiragana: "いろいろ", romaji: "iroiro", meaning: "macam-macam" }
+    ]
   }
 ];
 
