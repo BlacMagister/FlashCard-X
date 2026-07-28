@@ -438,4 +438,7 @@ const baseChapters: ChapterData[] = [
 
 
 import { irodoriChapters } from "./data/irodoriChapters";
-export const chapters = [...baseChapters, ...irodoriChapters];
+import { irodoriA2Chapters } from "./data/irodoriA2Chapters";
+import { irodoriA2_2Chapters } from "./data/irodoriA2_2Chapters";
+
+export const chapters = [...baseChapters, ...irodoriChapters, ...irodoriA2Chapters, ...irodoriA2_2Chapters];

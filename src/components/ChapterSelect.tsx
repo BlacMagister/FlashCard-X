@@ -14,7 +14,9 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const regularChapters = chapters.filter(c => !c.name.toLowerCase().includes("irodori"));
-  const irodoriChapters = chapters.filter(c => c.name.toLowerCase().includes("irodori"));
+  const irodoriA1Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && !c.name.includes("A2"));
+  const irodoriA2Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && c.name.includes("Irodori Dasar (A2)"));
+  const irodoriA2_2Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && c.name.includes("Irodori Lanjut (A2)"));
   
   const selectedChapter = chapters.find(c => c.id === selectedChapterId);
 
@@ -36,7 +38,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
       >
         <div className="flex items-center gap-2 font-medium">
           <BookOpen className="w-4 h-4 text-[var(--color-text-light)]" />
-          <span className="truncate max-w-[150px] text-left">{selectedChapter?.name || "Pilih Bab"}</span>
+          <span className="truncate max-w-[150px] text-left">{selectedChapter?.name.replace(/Irodori /i, '') || "Pilih Bab"}</span>
         </div>
         <ChevronDown className={`w-4 h-4 text-[var(--color-text-light)] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -52,7 +54,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
           >
             <div className="overflow-y-auto p-2 scrollbar-thin">
               <div className="mb-2">
-                <div className="px-3 py-1.5 text-xs font-bold tracking-wider text-[var(--color-text-light)] uppercase">
+                <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1">
                   Minna no Nihongo (Bab)
                 </div>
                 {regularChapters.map((chapter) => (
@@ -77,10 +79,10 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
               <div className="h-px bg-[var(--color-border-color)] my-2 w-full"></div>
 
               <div>
-                <div className="px-3 py-1.5 text-xs font-bold tracking-wider text-[var(--color-text-light)] uppercase">
-                  Irodori (Bab Khusus)
+                <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1 mt-1">
+                  Irodori Dasar (A1)
                 </div>
-                {irodoriChapters.map((chapter) => (
+                {irodoriA1Chapters.map((chapter) => (
                   <button
                     key={chapter.id}
                     onClick={() => {
@@ -93,7 +95,55 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                         : 'text-[var(--color-text-main)] hover:bg-[var(--color-app-bg)]'
                     }`}
                   >
-                    {chapter.name}
+                    {chapter.name.replace(/Irodori /i, '')}
+                    {selectedChapterId === chapter.id && <Check className="w-4 h-4" />}
+                  </button>
+                ))}
+              </div>
+
+              <div className="h-px bg-[var(--color-border-color)] my-2 w-full"></div>
+              <div>
+                <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1 mt-1">
+                  Irodori Dasar (A2)
+                </div>
+                {irodoriA2Chapters.map((chapter) => (
+                  <button
+                    key={chapter.id}
+                    onClick={() => {
+                      onSelect(chapter.id);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedChapterId === chapter.id 
+                        ? 'bg-[var(--color-card-back)] text-white' 
+                        : 'text-[var(--color-text-main)] hover:bg-[var(--color-app-bg)]'
+                    }`}
+                  >
+                    {chapter.name.replace(/Irodori Dasar \(A2\) /i, 'Bab ')}
+                    {selectedChapterId === chapter.id && <Check className="w-4 h-4" />}
+                  </button>
+                ))}
+              </div>
+
+              <div className="h-px bg-[var(--color-border-color)] my-2 w-full"></div>
+              <div>
+                <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1 mt-1">
+                  Irodori Lanjut (A2)
+                </div>
+                {irodoriA2_2Chapters.map((chapter) => (
+                  <button
+                    key={chapter.id}
+                    onClick={() => {
+                      onSelect(chapter.id);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedChapterId === chapter.id 
+                        ? 'bg-[var(--color-card-back)] text-white' 
+                        : 'text-[var(--color-text-main)] hover:bg-[var(--color-app-bg)]'
+                    }`}
+                  >
+                    {chapter.name.replace(/Irodori Lanjut \(A2\) /i, 'Bab ')}
                     {selectedChapterId === chapter.id && <Check className="w-4 h-4" />}
                   </button>
                 ))}

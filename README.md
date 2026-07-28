@@ -52,4 +52,4 @@ Proyek ini sudah dilengkapi dengan konfigurasi `.replit` dan `replit.nix` sehing
 6. Aplikasi langsung live di Replit! 🚀
 
 ---
-**Created by Galuh**
+**Created by L**
