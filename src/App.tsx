@@ -362,6 +362,12 @@ export default function App() {
           </div>
         </>
       )}
+
+      <div className="mt-auto pt-8 pb-4 w-full flex justify-center items-center">
+        <p className="text-sm font-medium text-[var(--color-text-light)] tracking-wide">
+          create by <span className="font-semibold text-[var(--color-text-muted)]">Galuh</span>
+        </p>
+      </div>
     </div>
   );
 }
