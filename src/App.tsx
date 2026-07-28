@@ -1,8 +1,10 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, BookOpen, List, LayoutGrid } from "lucide-react";
+import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, BookOpen, List, LayoutGrid, Target, Moon, Sun } from "lucide-react";
 import { chapters } from "./data";
 import { Card } from "./components/Card";
+import { Challenge } from "./components/Challenge";
+import { ChapterSelect } from "./components/ChapterSelect";
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -20,8 +22,17 @@ const slideVariants = {
 };
 
 export default function App() {
-  const [viewMode, setViewMode] = useState<"flashcard" | "list">("flashcard");
+  const [viewMode, setViewMode] = useState<"flashcard" | "list" | "challenge">("flashcard");
   const [selectedChapterId, setSelectedChapterId] = useState(chapters[0].id);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
   
   const currentChapter = useMemo(() => {
     return chapters.find(c => c.id === selectedChapterId) || chapters[0];
@@ -142,99 +153,114 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDFCF8] flex flex-col items-center justify-center p-4 font-sans text-[#4A4A38] overflow-hidden">
+    <div className="min-h-screen bg-[var(--color-app-bg)] flex flex-col items-center justify-center p-4 font-sans text-[var(--color-text-main)] overflow-hidden">
       
       {/* Header */}
-      <div className="mb-8 flex flex-col items-center gap-3">
-        <div className="w-12 h-12 bg-[#5A5A40] rounded-xl flex items-center justify-center shadow-sm">
-          <div className="text-white font-bold text-2xl">X</div>
+      <div className="mb-8 w-full max-w-3xl flex items-center justify-between">
+        <div className="w-12 h-12 opacity-0 pointer-events-none"></div> {/* Spacer for centering */}
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-12 h-12 bg-[var(--color-primary)] rounded-xl flex items-center justify-center shadow-sm">
+            <div className="text-[var(--color-app-bg)] font-bold text-2xl">X</div>
+          </div>
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold tracking-tight text-[var(--color-text-main)]">Flashcard X</h1>
+          </div>
         </div>
-        <div className="text-center">
-          <h1 className="text-2xl font-semibold tracking-tight text-[#4A4A38]">Flashcard X</h1>
-        </div>
+        <button
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="w-12 h-12 rounded-full bg-[var(--color-card-bg)] border border-[var(--color-border-color)] flex items-center justify-center text-[var(--color-text-muted)] hover:bg-[var(--color-element-hover)] transition-colors"
+          aria-label="Toggle Theme"
+        >
+          {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
       {/* Settings Row */}
-      <div className="mb-8 flex flex-wrap items-center justify-center gap-6 bg-white px-6 py-3 rounded-full shadow-[0_2px_10px_rgba(90,90,64,0.05)] border border-[#E8E8DF]">
-        <div className="flex items-center gap-2 text-sm font-medium text-[#8C8C70]">
-          <BookOpen className="w-4 h-4" />
-          <select 
-            value={selectedChapterId}
-            onChange={(e) => setSelectedChapterId(Number(e.target.value))}
-            className="bg-[#FDFCF8] border border-[#E8E8DF] rounded-md text-[#4A4A38] focus:outline-none focus:border-[#5A5A40] focus:ring-1 focus:ring-[#5A5A40] px-2 py-1 cursor-pointer font-medium"
-          >
-            {chapters.map((chapter) => (
-              <option key={chapter.id} value={chapter.id}>
-                {chapter.name}
-              </option>
-            ))}
-          </select>
-        </div>
+      <div className="mb-8 w-full max-w-3xl flex flex-col md:flex-row items-center justify-center gap-4 md:gap-6 bg-[var(--color-card-bg)] px-6 py-4 md:py-3 rounded-[32px] shadow-sm border border-[var(--color-border-color)]">
+        <ChapterSelect 
+          chapters={chapters} 
+          selectedChapterId={selectedChapterId} 
+          onSelect={setSelectedChapterId} 
+        />
 
-        <div className="w-[1px] h-6 bg-[#E8E8DF]"></div>
+        <div className="hidden md:block w-[1px] h-6 bg-[var(--color-border-color)]"></div>
 
-        <div className="flex items-center gap-3 text-sm font-medium text-[#8C8C70]">
+        <div className="flex items-center gap-3 text-sm font-medium text-[var(--color-text-light)]">
           <span>Range:</span>
-          <input 
-            type="number" 
-            min={1} 
-            max={flashcards.length} 
-            value={rangeStart} 
-            onChange={handleStartChange}
-            className="w-14 h-8 text-center bg-[#FDFCF8] border border-[#E8E8DF] rounded-md text-[#4A4A38] focus:outline-none focus:border-[#5A5A40] focus:ring-1 focus:ring-[#5A5A40]"
-          />
-          <span>-</span>
-          <input 
-            type="number" 
-            min={1} 
-            max={flashcards.length} 
-            value={rangeEnd} 
-            onChange={handleEndChange}
-            className="w-14 h-8 text-center bg-[#FDFCF8] border border-[#E8E8DF] rounded-md text-[#4A4A38] focus:outline-none focus:border-[#5A5A40] focus:ring-1 focus:ring-[#5A5A40]"
-          />
+          <div className="flex items-center gap-2">
+            <input 
+              type="number" 
+              min={1} 
+              max={flashcards.length} 
+              value={rangeStart} 
+              onChange={handleStartChange}
+              className="w-16 h-9 text-center bg-[var(--color-app-bg)] border border-[var(--color-border-color)] rounded-xl text-[var(--color-text-main)] focus:outline-none focus:border-[var(--color-card-back)] focus:ring-1 focus:ring-[var(--color-card-back)] font-medium"
+            />
+            <span className="text-[#E8E8DF]">-</span>
+            <input 
+              type="number" 
+              min={1} 
+              max={flashcards.length} 
+              value={rangeEnd} 
+              onChange={handleEndChange}
+              className="w-16 h-9 text-center bg-[var(--color-app-bg)] border border-[var(--color-border-color)] rounded-xl text-[var(--color-text-main)] focus:outline-none focus:border-[var(--color-card-back)] focus:ring-1 focus:ring-[var(--color-card-back)] font-medium"
+            />
+          </div>
         </div>
 
-        <div className="w-[1px] h-6 bg-[#E8E8DF]"></div>
+        <div className="hidden md:block w-[1px] h-6 bg-[var(--color-border-color)]"></div>
+        <div className="md:hidden w-full h-[1px] bg-[var(--color-border-color)] my-1"></div>
 
-        <div className="flex bg-[#FDFCF8] rounded-md p-1 border border-[#E8E8DF]">
+        <div className="flex bg-[var(--color-app-bg)] rounded-xl p-1 border border-[var(--color-border-color)] w-full md:w-auto overflow-x-auto custom-scrollbar">
           <button 
              onClick={() => setViewMode("flashcard")}
-             className={`px-3 py-1.5 rounded-sm text-sm font-medium transition-colors flex items-center gap-2 ${viewMode === "flashcard" ? "bg-white shadow-sm text-[#4A4A38]" : "text-[#8C8C70] hover:text-[#4A4A38]"}`}
+             className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${viewMode === "flashcard" ? "bg-[var(--color-card-bg)] shadow-sm text-[var(--color-text-main)] border border-[var(--color-border-color)]" : "text-[var(--color-text-light)] hover:text-[var(--color-text-main)] border border-transparent"}`}
           >
             <LayoutGrid className="w-4 h-4" />
             Card
           </button>
           <button 
              onClick={() => setViewMode("list")}
-             className={`px-3 py-1.5 rounded-sm text-sm font-medium transition-colors flex items-center gap-2 ${viewMode === "list" ? "bg-white shadow-sm text-[#4A4A38]" : "text-[#8C8C70] hover:text-[#4A4A38]"}`}
+             className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${viewMode === "list" ? "bg-[var(--color-card-bg)] shadow-sm text-[var(--color-text-main)] border border-[var(--color-border-color)]" : "text-[var(--color-text-light)] hover:text-[var(--color-text-main)] border border-transparent"}`}
           >
             <List className="w-4 h-4" />
             List
           </button>
+          <button 
+             onClick={() => setViewMode("challenge")}
+             className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${viewMode === "challenge" ? "bg-[var(--color-card-bg)] shadow-sm text-[var(--color-text-main)] border border-[var(--color-border-color)]" : "text-[var(--color-text-light)] hover:text-[var(--color-text-main)] border border-transparent"}`}
+          >
+            <Target className="w-4 h-4" />
+            Tantangan
+          </button>
         </div>
       </div>
 
-      {viewMode === "list" ? (
-        <div className="w-full max-w-3xl bg-white rounded-[24px] sm:rounded-[32px] p-2 sm:p-4 shadow-[0_10px_40px_rgba(90,90,64,0.08)] border border-[#E8E8DF] max-h-[70vh] overflow-y-auto">
+      {viewMode === "challenge" ? (
+        <div className="w-full h-full flex-1 flex flex-col justify-center">
+          <Challenge cards={activeCards} onExit={() => setViewMode("flashcard")} />
+        </div>
+      ) : viewMode === "list" ? (
+        <div className="w-full max-w-3xl bg-[var(--color-card-bg)] rounded-[24px] sm:rounded-[32px] p-2 sm:p-4 shadow-[0_10px_40px_rgba(90,90,64,0.08)] border border-[var(--color-border-color)] max-h-[70vh] overflow-y-auto">
           <div className="flex flex-col">
             {flashcards.map((c, i) => (
-              <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 border-b border-[#F0F0E8] last:border-0 hover:bg-[#FDFCF8] transition-colors gap-2 sm:gap-6">
+              <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 border-b border-[var(--color-border-light)] last:border-0 hover:bg-[var(--color-app-bg)] transition-colors gap-2 sm:gap-6">
                 <div className="flex items-start sm:items-center gap-4 sm:w-1/2">
-                  <span className="text-xs font-bold text-[#DEDED1] w-5 sm:w-6 pt-1 sm:pt-0 shrink-0">{i + 1}</span>
+                  <span className="text-xs font-bold text-[var(--color-text-inverse)] w-5 sm:w-6 pt-1 sm:pt-0 shrink-0">{i + 1}</span>
                   <div className="flex flex-col gap-1">
-                    {c.kanji && <span className="text-2xl sm:text-3xl font-medium text-[#2D2D24] leading-tight">{c.kanji}</span>}
-                    <span className={`${c.kanji ? 'text-sm text-[#8C8C70]' : 'text-2xl sm:text-3xl font-medium text-[#2D2D24]'} leading-tight`}>
+                    {c.kanji && <span className="text-2xl sm:text-3xl font-medium text-[var(--color-primary)] leading-tight">{c.kanji}</span>}
+                    <span className={`${c.kanji ? 'text-sm text-[var(--color-text-light)]' : 'text-2xl sm:text-3xl font-medium text-[var(--color-primary)]'} leading-tight`}>
                       {c.hiragana}
                     </span>
                     {c.romaji && (
-                      <span className="text-xs font-mono text-[#A3A38A] leading-none">
+                      <span className="text-xs font-mono text-[var(--color-text-light)] leading-none">
                         {c.romaji}
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="sm:w-1/2 sm:pl-4 mt-2 sm:mt-0">
-                  <span className="text-base sm:text-lg text-[#5A5A40] font-serif leading-relaxed">
+                  <span className="text-base sm:text-lg text-[var(--color-text-muted)] font-serif leading-relaxed">
                     {c.meaning}
                   </span>
                 </div>
@@ -266,7 +292,7 @@ export default function App() {
                 </motion.div>
               </AnimatePresence>
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-white rounded-[48px] border border-[#E8E8DF] text-[#8C8C70]">
+              <div className="w-full h-full flex items-center justify-center bg-[var(--color-card-bg)] rounded-[48px] border border-[var(--color-border-color)] text-[var(--color-text-light)]">
                 No cards in range
               </div>
             )}
@@ -277,7 +303,7 @@ export default function App() {
             <button
               onClick={prevCard}
               disabled={currentIndex === 0 || activeCards.length === 0}
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-[#E8E8DF] flex shrink-0 items-center justify-center text-[#8C8C70] hover:bg-white hover:text-[#5A5A40] disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-[var(--color-border-color)] flex shrink-0 items-center justify-center text-[var(--color-text-light)] hover:bg-[var(--color-card-bg)] hover:text-[var(--color-text-muted)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
               aria-label="Previous card"
             >
               <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={1.5} />
@@ -287,7 +313,7 @@ export default function App() {
               <button 
                 onClick={() => setIsShuffled(!isShuffled)}
                 className={`flex items-center justify-center gap-2 text-xs sm:text-sm font-medium px-4 py-1.5 rounded-full transition-colors border ${
-                  isShuffled ? "bg-[#5A5A40] text-white border-[#5A5A40]" : "text-[#8C8C70] border-[#E8E8DF] hover:bg-white hover:text-[#5A5A40]"
+                  isShuffled ? "bg-[var(--color-primary)] text-[var(--color-app-bg)] border-[var(--color-primary)]" : "text-[var(--color-text-light)] border-[var(--color-border-color)] hover:bg-[var(--color-card-bg)] hover:text-[var(--color-text-muted)]"
                 }`}
               >
                 <Shuffle className="w-3 h-3 sm:w-4 sm:h-4" />
@@ -297,7 +323,7 @@ export default function App() {
               <button
                 onClick={() => setIsFlipped(!isFlipped)}
                 disabled={activeCards.length === 0}
-                className="px-6 py-3 sm:px-8 sm:py-4 bg-[#5A5A40] text-[#FDFCF8] rounded-full text-sm sm:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all min-w-[120px] sm:min-w-[160px] disabled:opacity-40 disabled:cursor-not-allowed"
+                className="px-6 py-3 sm:px-8 sm:py-4 bg-[var(--color-primary)] text-[var(--color-app-bg)] rounded-full text-sm sm:text-base font-semibold shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all min-w-[120px] sm:min-w-[160px] disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 {isFlipped ? "Tutup Kartu" : "Buka Kartu"}
               </button>
@@ -306,7 +332,7 @@ export default function App() {
             <button
               onClick={nextCard}
               disabled={safeIndex === activeCards.length - 1 || activeCards.length === 0}
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-[#E8E8DF] flex shrink-0 items-center justify-center text-[#8C8C70] hover:bg-white hover:text-[#5A5A40] disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
+              className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-[var(--color-border-color)] flex shrink-0 items-center justify-center text-[var(--color-text-light)] hover:bg-[var(--color-card-bg)] hover:text-[var(--color-text-muted)] disabled:opacity-40 disabled:cursor-not-allowed transition-colors active:scale-95"
               aria-label="Next card"
             >
               <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" strokeWidth={1.5} />
@@ -316,8 +342,8 @@ export default function App() {
           {/* Progress Indicator & Restart */}
           <div className="mt-8 flex flex-col items-center justify-center gap-4 h-[80px]">
             <div className="flex flex-col items-center justify-center gap-1">
-              <span className="text-[10px] uppercase tracking-[0.2em] text-[#8C8C70] font-bold">Progress</span>
-              <span className="text-sm font-semibold text-[#5A5A40]">
+              <span className="text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-light)] font-bold">Progress</span>
+              <span className="text-sm font-semibold text-[var(--color-text-muted)]">
                 {activeCards.length > 0 ? safeIndex + 1 : 0} / {activeCards.length}
               </span>
             </div>
@@ -327,7 +353,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 onClick={restart}
-                className="flex items-center gap-2 text-sm font-semibold text-[#8C8C70] hover:text-[#5A5A40] transition-colors px-6 py-2 rounded-full hover:bg-[#E8E8DF]"
+                className="flex items-center gap-2 text-sm font-semibold text-[var(--color-text-light)] hover:text-[var(--color-text-muted)] transition-colors px-6 py-2 rounded-full hover:bg-[var(--color-border-color)]"
               >
                 <RotateCcw className="w-4 h-4" strokeWidth={2.5} />
                 Mulai Ulang
