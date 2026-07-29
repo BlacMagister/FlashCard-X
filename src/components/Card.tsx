@@ -23,6 +23,11 @@ export function Card({ card, isFlipped, onFlip }: CardProps) {
       >
         {/* Front Face */}
         <div className="absolute inset-0 [backface-visibility:hidden] bg-[var(--color-card-bg)] rounded-[40px] sm:rounded-[48px] shadow-xl border border-[var(--color-border-light)] flex flex-col items-center justify-center p-6 sm:p-8">
+          {card.no && (
+            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 text-[var(--color-text-light)] text-sm sm:text-base font-bold font-mono">
+              #{card.no}
+            </div>
+          )}
           <h2 className="text-4xl sm:text-[80px] font-medium text-[var(--color-primary)] text-center leading-tight">
             {card.kanji || card.hiragana}
           </h2>
@@ -33,6 +38,11 @@ export function Card({ card, isFlipped, onFlip }: CardProps) {
 
         {/* Back Face */}
         <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-[var(--color-card-back)] rounded-[40px] sm:rounded-[48px] shadow-xl flex flex-col items-center justify-center p-6 sm:p-8 border border-[var(--color-border-color)] gap-2 sm:gap-4">
+          {card.no && (
+            <div className="absolute top-6 left-6 sm:top-8 sm:left-8 text-[var(--color-text-inverse)] opacity-60 text-sm sm:text-base font-bold font-mono">
+              #{card.no}
+            </div>
+          )}
           <div className="flex flex-col items-center gap-1 mb-2">
             {card.kanji && (
               <p className="text-xl sm:text-3xl font-medium text-[var(--color-text-inverse)] text-center leading-relaxed">

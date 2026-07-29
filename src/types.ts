@@ -3,6 +3,7 @@ export interface FlashcardData {
   hiragana: string;
   romaji?: string;
   meaning: string;
+  no?: string;
 }
 
 export interface ChapterData {

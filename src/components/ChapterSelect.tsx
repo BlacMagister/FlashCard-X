@@ -12,11 +12,15 @@ interface ChapterSelectProps {
 export function ChapterSelect({ chapters, selectedChapterId, onSelect }: ChapterSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const selectedItemRef = useRef<HTMLButtonElement>(null);
 
-  const regularChapters = chapters.filter(c => !c.name.toLowerCase().includes("irodori"));
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const regularChapters = chapters.filter(c => !c.name.toLowerCase().includes("irodori") && !c.name.toLowerCase().includes("kanji jft"));
   const irodoriA1Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && !c.name.includes("A2"));
   const irodoriA2Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && c.name.includes("Irodori Dasar (A2)"));
   const irodoriA2_2Chapters = chapters.filter(c => c.name.toLowerCase().includes("irodori") && c.name.includes("Irodori Lanjut (A2)"));
+  const kanjiJftChapters = chapters.filter(c => c.name.toLowerCase().includes("kanji jft"));
   
   const selectedChapter = chapters.find(c => c.id === selectedChapterId);
 
@@ -29,6 +33,25 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (isOpen && selectedItemRef.current && containerRef.current) {
+      setTimeout(() => {
+        const container = containerRef.current;
+        const item = selectedItemRef.current;
+        if (container && item) {
+          const itemTop = item.offsetTop;
+          const itemHeight = item.offsetHeight;
+          const containerHeight = container.offsetHeight;
+          
+          container.scrollTo({
+            top: itemTop - containerHeight / 2 + itemHeight / 2,
+            behavior: 'smooth'
+          });
+        }
+      }, 50);
+    }
+  }, [isOpen]);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -52,7 +75,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
             transition={{ duration: 0.2 }}
             className="absolute z-50 mt-2 w-72 left-1/2 -translate-x-1/2 bg-[var(--color-card-bg)] border border-[var(--color-border-color)] rounded-xl shadow-lg overflow-hidden flex flex-col max-h-96"
           >
-            <div className="overflow-y-auto p-2 scrollbar-thin">
+            <div className="overflow-y-auto p-2 scrollbar-thin" ref={containerRef}>
               <div className="mb-2">
                 <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1">
                   Minna no Nihongo (Bab)
@@ -60,6 +83,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                 {regularChapters.map((chapter) => (
                   <button
                     key={chapter.id}
+                    ref={selectedChapterId === chapter.id ? selectedItemRef : null}
                     onClick={() => {
                       onSelect(chapter.id);
                       setIsOpen(false);
@@ -85,6 +109,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                 {irodoriA1Chapters.map((chapter) => (
                   <button
                     key={chapter.id}
+                    ref={selectedChapterId === chapter.id ? selectedItemRef : null}
                     onClick={() => {
                       onSelect(chapter.id);
                       setIsOpen(false);
@@ -109,6 +134,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                 {irodoriA2Chapters.map((chapter) => (
                   <button
                     key={chapter.id}
+                    ref={selectedChapterId === chapter.id ? selectedItemRef : null}
                     onClick={() => {
                       onSelect(chapter.id);
                       setIsOpen(false);
@@ -133,6 +159,7 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                 {irodoriA2_2Chapters.map((chapter) => (
                   <button
                     key={chapter.id}
+                    ref={selectedChapterId === chapter.id ? selectedItemRef : null}
                     onClick={() => {
                       onSelect(chapter.id);
                       setIsOpen(false);
@@ -144,6 +171,30 @@ export function ChapterSelect({ chapters, selectedChapterId, onSelect }: Chapter
                     }`}
                   >
                     {chapter.name.replace(/Irodori Lanjut \(A2\) /i, 'Bab ')}
+                    {selectedChapterId === chapter.id && <Check className="w-4 h-4" />}
+                  </button>
+                ))}
+              </div>
+              <div className="h-px bg-[var(--color-border-color)] my-2 w-full"></div>
+              <div>
+                <div className="px-3 py-2 text-sm font-black tracking-wider text-[var(--color-text-main)] uppercase bg-[var(--color-app-bg)] rounded-md mb-1 mt-1">
+                  Kanji JFT
+                </div>
+                {kanjiJftChapters.map((chapter) => (
+                  <button
+                    key={chapter.id}
+                    ref={selectedChapterId === chapter.id ? selectedItemRef : null}
+                    onClick={() => {
+                      onSelect(chapter.id);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                      selectedChapterId === chapter.id 
+                        ? 'bg-[var(--color-card-back)] text-white' 
+                        : 'text-[var(--color-text-main)] hover:bg-[var(--color-app-bg)]'
+                    }`}
+                  >
+                    {chapter.name}
                     {selectedChapterId === chapter.id && <Check className="w-4 h-4" />}
                   </button>
                 ))}

@@ -5,6 +5,7 @@ import { chapters } from "./data";
 import { Card } from "./components/Card";
 import { Challenge } from "./components/Challenge";
 import { ChapterSelect } from "./components/ChapterSelect";
+import { GrammarPractice } from "./components/GrammarPractice";
 
 const slideVariants = {
   enter: (direction: number) => ({
@@ -22,7 +23,7 @@ const slideVariants = {
 };
 
 export default function App() {
-  const [viewMode, setViewMode] = useState<"flashcard" | "list" | "challenge">("flashcard");
+  const [viewMode, setViewMode] = useState<"flashcard" | "list" | "challenge" | "grammar">("flashcard");
   const [selectedChapterId, setSelectedChapterId] = useState(chapters[0].id);
   const [isDarkMode, setIsDarkMode] = useState(false);
 
@@ -233,10 +234,21 @@ export default function App() {
             <Target className="w-4 h-4" />
             Tantangan
           </button>
+          <button 
+             onClick={() => setViewMode("grammar")}
+             className={`flex-1 md:flex-none px-4 py-2 rounded-lg text-sm font-medium transition-all flex items-center justify-center gap-2 ${viewMode === "grammar" ? "bg-[var(--color-card-bg)] shadow-sm text-[var(--color-text-main)] border border-[var(--color-border-color)]" : "text-[var(--color-text-light)] hover:text-[var(--color-text-main)] border border-transparent"}`}
+          >
+            <BookOpen className="w-4 h-4" />
+            Tata Bahasa
+          </button>
         </div>
       </div>
 
-      {viewMode === "challenge" ? (
+      {viewMode === "grammar" ? (
+        <div className="w-full h-full flex-1 flex flex-col items-center justify-center">
+          <GrammarPractice onExit={() => setViewMode("flashcard")} />
+        </div>
+      ) : viewMode === "challenge" ? (
         <div className="w-full h-full flex-1 flex flex-col justify-center">
           <Challenge cards={activeCards} onExit={() => setViewMode("flashcard")} />
         </div>
