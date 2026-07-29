@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, RotateCcw, Shuffle, BookOpen, List, LayoutGrid, Target, Moon, Sun } from "lucide-react";
 import { chapters } from "./data";
@@ -26,6 +26,13 @@ export default function App() {
   const [viewMode, setViewMode] = useState<"flashcard" | "list" | "challenge" | "grammar">("flashcard");
   const [selectedChapterId, setSelectedChapterId] = useState(chapters[0].id);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const listContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (listContainerRef.current) {
+      listContainerRef.current.scrollTop = 0;
+    }
+  }, [selectedChapterId]);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -253,7 +260,7 @@ export default function App() {
           <Challenge cards={activeCards} onExit={() => setViewMode("flashcard")} />
         </div>
       ) : viewMode === "list" ? (
-        <div className="w-full max-w-3xl bg-[var(--color-card-bg)] rounded-[24px] sm:rounded-[32px] p-2 sm:p-4 shadow-[0_10px_40px_rgba(90,90,64,0.08)] border border-[var(--color-border-color)] max-h-[70vh] overflow-y-auto">
+        <div ref={listContainerRef} className="w-full max-w-3xl bg-[var(--color-card-bg)] rounded-[24px] sm:rounded-[32px] p-2 sm:p-4 shadow-[0_10px_40px_rgba(90,90,64,0.08)] border border-[var(--color-border-color)] max-h-[70vh] overflow-y-auto">
           <div className="flex flex-col">
             {flashcards.map((c, i) => (
               <div key={i} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 sm:p-5 border-b border-[var(--color-border-light)] last:border-0 hover:bg-[var(--color-app-bg)] transition-colors gap-2 sm:gap-6">

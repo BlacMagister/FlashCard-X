@@ -437,9 +437,10 @@ const baseChapters: ChapterData[] = [
 ];
 
 
+import { irodoriA1Chapters } from "./data/irodoriA1Chapters";
 import { irodoriChapters } from "./data/irodoriChapters";
 import { irodoriA2Chapters } from "./data/irodoriA2Chapters";
 import { irodoriA2_2Chapters } from "./data/irodoriA2_2Chapters";
 
 import { kanjiJFTChapters } from "./data/kanjiJFTChapters";
-export const chapters = [...baseChapters, ...irodoriChapters, ...irodoriA2Chapters, ...irodoriA2_2Chapters, ...kanjiJFTChapters];
+export const chapters = [...baseChapters, ...irodoriA1Chapters, ...irodoriChapters, ...irodoriA2Chapters, ...irodoriA2_2Chapters, ...kanjiJFTChapters];
